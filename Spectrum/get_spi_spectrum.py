@@ -12,7 +12,7 @@ def cool_dwarfs(cd, feh, logt, logg):
                cd[21,:]*logt*logt*logt*logt*logt
                 )
 
-    return cd[0,:] * 10**log_flux
+    return cd[0,:] * np.exp(log_flux)
 
 def cool_giants(cg, feh, logt, logg):
     log_flux = (cg[1,:] + cg[2,:]*logt + cg[3,:]*feh + cg[4,:]*logg + cg[5,:]*logt*logt +
@@ -23,7 +23,7 @@ def cool_giants(cg, feh, logt, logg):
                cg[19,:]*logt*logg*logg + cg[20,:]*feh*logg*logg + cg[21,:]*logt*logt*logt*logt
                 )
 
-    return cg[0,:] * 10**log_flux
+    return cg[0,:] * np.exp(log_flux)
 
 def warm_giants(wg, feh, logt, logg):
     log_flux = (wg[1,:] + wg[2,:]*logt + wg[3,:]*feh + wg[4,:]*logg + wg[5,:]*logt*logt +
@@ -35,7 +35,7 @@ def warm_giants(wg, feh, logt, logg):
                wg[22,:]*feh*feh*logg*logg + wg[23,:]*logt*logt*logt*logt*logt
                 )
 
-    return wg[0,:] * 10**log_flux
+    return wg[0,:] * np.exp(log_flux)
 
 def warm_dwarfs(wd, feh, logt, logg):
     log_flux = (wd[1,:] + wd[2,:]*logt + wd[3,:]*feh + wd[4,:]*logg + wd[5,:]*logt*logt +
@@ -49,7 +49,7 @@ def warm_dwarfs(wd, feh, logt, logg):
                wd[25,:]*feh*logt*logt*logg + wd[26,:]*logt*logt*logt*logt*logt
                 )
 
-    return wd[0,:] * 10**log_flux
+    return wd[0,:] * np.exp(log_flux)
 
 def hot_stars(hs, feh, logt, logg):
     log_flux = (hs[1,:] + hs[2,:]*logt + hs[3,:]*feh + hs[4,:]*logg + hs[5,:]*logt*logt +
@@ -60,9 +60,9 @@ def hot_stars(hs, feh, logt, logg):
                hs[19,:]*logt*logg*logg + hs[20,:]*feh*logg*logg + hs[21,:]*logt*logt*logt*logt
                 )
 
-    return hs[0,:] * 10**log_flux
+    return hs[0,:] * np.exp(log_flux)
 
-def from_coefficients(logt, logg, feh):
+def from_coefficients(teff, logg, feh):
     """ Generate a stellar spectrum using the
     coeffecients
 
@@ -122,15 +122,15 @@ def from_coefficients(logt, logg, feh):
     """
     Setting up some boundaries
     """
-    teff2, logg2 = 10**logt, logg
-    if teff2 < 2800.:
+    teff2 = teff
+    logg2 = logg
+    if teff2 <= 2800.:
         teff2 = 2800
     if logg2 < (-0.5):
         logg2 = (-0.5)
 
-    # Can't remember what this is for
-    # Normalizing to solar values for some reason?
-    logt = logt - 3.7617
+    # Normalizing to solar values
+    logt = np.log10(teff2) - 3.7617
     logg = logg - 4.44
 
     # Giants
@@ -149,6 +149,7 @@ def from_coefficients(logt, logg, feh):
         flux = (flux1*weight + flux2*(1-weight))
 
     elif (teff2 >= 3500. and teff2 < 4500. and logg2 <= 4.0 and logg2 >= -0.5):
+        print "HELLO"
         flux1 = cool_giants(cg, feh, logt, logg)
         flux2 = warm_giants(wg, feh, logt, logg)
 
@@ -189,5 +190,13 @@ def from_coefficients(logt, logg, feh):
     return spec
 
 if __name__=='__main__':
-    pass
+
+    import matplotlib.pyplot as plt
+    teff = 3650.41801701
+    logg = 0.900279683289
+    feh = 0.0
+
+    spec = from_coefficients(teff, logg, feh)
+    plt.plot(spec['wave'], spec['flux'])
+    plt.show()
 
