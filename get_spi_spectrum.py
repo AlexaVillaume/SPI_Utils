@@ -116,6 +116,10 @@ def from_coefficients(logt, logg, feh):
     if logg < (-0.5):
         logg = (-0.5)
 
+    # Can't remember what this is for
+    #logt = logt - 3.7617
+    #logg = logg -
+
     # Giants
     if (teff >= 2500. and teff <= 3500. and logg <= 4.0 and logg >= -0.5):
         flux = cool_giants(cg, feh, logt, logg)
