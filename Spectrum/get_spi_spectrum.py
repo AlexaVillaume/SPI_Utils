@@ -110,6 +110,9 @@ def from_coefficients(logt, logg, feh):
     cd, cg, wd, wg, hs = cd.T, cg.T, wd.T, wg.T, hs.T
 
     # Wavelength is the first point, remove it
+    # but first save it as a variable
+    wave = cd[0,:]
+
     cd = cd[1:len(cd),:]
     cg = cg[1:len(cg),:]
     wd = wd[1:len(wd),:]
@@ -121,7 +124,7 @@ def from_coefficients(logt, logg, feh):
     """
     teff2, logg2 = 10**logt, logg
     if teff2 < 2800.:
-        teff2 = np.log10(2800)
+        teff2 = 2800
     if logg2 < (-0.5):
         logg2 = (-0.5)
 
@@ -179,7 +182,11 @@ def from_coefficients(logt, logg, feh):
                  'teff = {0},  logg {1}')
         raise ValueError(error.format(teff2, logg))
 
-    return flux
+    spec = {}
+    spec['wave'] = wave
+    spec['flux'] = flux
+
+    return spec
 
 if __name__=='__main__':
     pass
