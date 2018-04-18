@@ -68,8 +68,8 @@ def from_coefficients(teff, logg, feh):
 
     Parameters:
     -----------
-    logt: float
-        log10 of effective temperture
+    teff: float
+        effective temperture
     logg: float
         surface gravity
     feh: float
@@ -149,7 +149,6 @@ def from_coefficients(teff, logg, feh):
         flux = (flux1*weight + flux2*(1-weight))
 
     elif (teff2 >= 3500. and teff2 < 4500. and logg2 <= 4.0 and logg2 >= -0.5):
-        print "HELLO"
         flux1 = cool_giants(cg, feh, logt, logg)
         flux2 = warm_giants(wg, feh, logt, logg)
 
@@ -192,8 +191,8 @@ def from_coefficients(teff, logg, feh):
 if __name__=='__main__':
 
     import matplotlib.pyplot as plt
-    teff = 3650.41801701
-    logg = 0.900279683289
+    teff = 3110.1831261806437
+    logg = 5.1249530724684771
     feh = 0.0
 
     spec = from_coefficients(teff, logg, feh)
