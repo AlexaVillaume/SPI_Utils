@@ -100,13 +100,20 @@ def from_coefficients(logt, logg, feh):
     """
     Open SPI coefficient files
     """
-    cd = np.loadtxt('Cool_Dwarfs_coeffs.dat')
-    cg = np.loadtxt('Cool_Giants_coeffs.dat')
-    wd = np.loadtxt('Warm_Dwarfs_coeffs.dat')
-    wg = np.loadtxt('Warm_Giants_coeffs.dat')
-    hs = np.loadtxt('Hot_Stars_coeffs.dat')
+    cd = np.loadtxt('Coefficients/Cool_Dwarfs.dat')
+    cg = np.loadtxt('Coefficients/Cool_Giants.dat')
+    wd = np.loadtxt('Coefficients/Warm_Dwarfs.dat')
+    wg = np.loadtxt('Coefficients/Warm_Giants.dat')
+    hs = np.loadtxt('Coefficients/Hot_Stars.dat')
 
     cd, cg, wd, wg, hs = cd.T, cg.T, wd.T, wg.T, hs.T
+
+    # Wavelength is the first point, remove it
+    cd = cd[1,:]
+    cg = cg[1,:]
+    wd = wd[1,:]
+    wg = wg[1,:]
+    hs = hs[1,:]
 
     """
     Setting up some boundaries
@@ -172,5 +179,5 @@ def from_coefficients(logt, logg, feh):
     return flux
 
 if __name__=='__main__':
-    pass
+    from_coefficients(1,1,1)
 
