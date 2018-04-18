@@ -109,11 +109,11 @@ def from_coefficients(logt, logg, feh):
     cd, cg, wd, wg, hs = cd.T, cg.T, wd.T, wg.T, hs.T
 
     # Wavelength is the first point, remove it
-    cd = cd[1,:]
-    cg = cg[1,:]
-    wd = wd[1,:]
-    wg = wg[1,:]
-    hs = hs[1,:]
+    cd = cd[1:len(cd),:]
+    cg = cg[1:len(cg),:]
+    wd = wd[1:len(wd),:]
+    wg = wg[1:len(wg),:]
+    hs = hs[1:len(hs),:]
 
     """
     Setting up some boundaries
