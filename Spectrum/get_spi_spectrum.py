@@ -118,23 +118,25 @@ def from_coefficients(logt, logg, feh):
     """
     Setting up some boundaries
     """
-    if 10**logt < 2800.:
-        logt = np.log10(2800)
-    if logg < (-0.5):
-        logg = (-0.5)
+    teff2, logg2 = 10**logt, logg2
+    if teff2 < 2800.:
+        teff2 = np.log10(2800)
+    if logg2 < (-0.5):
+        logg2 = (-0.5)
 
     # Can't remember what this is for
-    #logt = logt - 3.7617
-    #logg = logg -
+    # Normalizing to solar values for some reason?
+    logt = logt - 3.7617
+    logg = logg - 4.44
 
     # Giants
-    if (teff >= 2500. and teff <= 3500. and logg <= 4.0 and logg >= -0.5):
+    if (teff2 >= 2500. and teff2 <= 3500. and logg2 <= 4.0 and logg2 >= -0.5):
         flux = cool_giants(cg, feh, logt, logg)
 
-    elif (teff >= 4500. and teff <= 5500. and logg <= 4.0 and logg >= -0.5):
+    elif (teff2 >= 4500. and teff2 <= 5500. and logg2 <= 4.0 and logg2 >= -0.5):
         flux = warm_giants(wg, feh, logt, logg)
 
-    elif (teff >= 5500. and teff < 6500. and logg <= 4.0 and logg >= -0.5):
+    elif (teff2 >= 5500. and teff2 < 6500. and logg2 <= 4.0 and logg2 >= -0.5):
         flux1 = warm_giants(wg, feh, logt, logg)
         flux2 = hot_stars(hs, feh, logt, logg)
 
@@ -142,7 +144,7 @@ def from_coefficients(logt, logg, feh):
         weight = gh_weights[t_index]
         flux = (flux1*weight + flux2*(1-weight))
 
-    elif (teff >= 3500. and teff < 4500. and logg <= 4.0 and logg >= -0.5):
+    elif (teff2 >= 3500. and teff2 < 4500. and logg2 <= 4.0 and logg2 >= -0.5):
         flux1 = cool_giants(cg, feh, logt, logg)
         flux2 = warm_giants(wg, feh, logt, logg)
 
@@ -151,13 +153,13 @@ def from_coefficients(logt, logg, feh):
         flux = (flux1*weight + flux2*(1-weight))
 
     # Dwarfs
-    elif (teff >= 5500. and teff < 6000. and logg > 4.0):
+    elif (teff2 >= 5500. and teff2 < 6000. and logg2 > 4.0):
         flux = warm_dwarfs(wd, feh, logt, logg)
 
-    elif (teff >= 2500. and teff <= 3000. and logg > 4.0):
+    elif (teff2 >= 2500. and teff2 <= 3000. and logg2 > 4.0):
         flux = cool_dwarfs(cd, feh, logt, logg)
 
-    elif (teff >= 3000. and teff <= 5500. and logg > 4.0):
+    elif (teff2 >= 3000. and teff2 <= 5500. and logg2 > 4.0):
         flux1 = cool_dwarfs(cd, feh, logt, logg)
         flux2 = warm_dwarfs(wd, feh, logt, logg)
 
@@ -166,10 +168,10 @@ def from_coefficients(logt, logg, feh):
         flux = (flux1*weight + flux2*(1-weight))
 
     # Hot stars, have to split this up bcuz of warm stars
-    elif (teff >= 6500. and teff <= 12e3 and logg <= 4.0 and logg >= -0.5):
+    elif (teff2 >= 6500. and teff2 <= 12e3 and logg2 <= 4.0 and logg2 >= -0.5):
         flux = hot_stars(hs, feh, logt, logg)
 
-    elif (teff >= 6000. and teff <= 12e3 and logg > 4.0):
+    elif (teff2 >= 6000. and teff2 <= 12e3 and logg2 > 4.0):
         flux = hot_stars(hs, feh, logt, logg)
     else:
         error = ('Parameter out of bounds:'
@@ -179,5 +181,5 @@ def from_coefficients(logt, logg, feh):
     return flux
 
 if __name__=='__main__':
-    from_coefficients(1,1,1)
+    pass
 
