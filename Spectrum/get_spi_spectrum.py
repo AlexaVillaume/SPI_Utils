@@ -100,11 +100,12 @@ def from_coefficients(logt, logg, feh):
     """
     Open SPI coefficient files
     """
-    cd = np.loadtxt('Coefficients/Cool_Dwarfs.dat')
-    cg = np.loadtxt('Coefficients/Cool_Giants.dat')
-    wd = np.loadtxt('Coefficients/Warm_Dwarfs.dat')
-    wg = np.loadtxt('Coefficients/Warm_Giants.dat')
-    hs = np.loadtxt('Coefficients/Hot_Stars.dat')
+    path = '/Users/alexa/SPI_Utils/Spectrum/Coefficients/'
+    cd = np.loadtxt(path + 'Cool_Dwarfs.dat')
+    cg = np.loadtxt(path + 'Cool_Giants.dat')
+    wd = np.loadtxt(path + 'Warm_Dwarfs.dat')
+    wg = np.loadtxt(path + 'Warm_Giants.dat')
+    hs = np.loadtxt(path + 'Hot_Stars.dat')
 
     cd, cg, wd, wg, hs = cd.T, cg.T, wd.T, wg.T, hs.T
 
@@ -118,7 +119,7 @@ def from_coefficients(logt, logg, feh):
     """
     Setting up some boundaries
     """
-    teff2, logg2 = 10**logt, logg2
+    teff2, logg2 = 10**logt, logg
     if teff2 < 2800.:
         teff2 = np.log10(2800)
     if logg2 < (-0.5):
