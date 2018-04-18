@@ -141,7 +141,7 @@ def from_coefficients(logt, logg, feh):
         flux1 = warm_giants(wg, feh, logt, logg)
         flux2 = hot_stars(hs, feh, logt, logg)
 
-        t_index = (np.abs(gh_teff_overlap - teff)).argmin()
+        t_index = (np.abs(gh_teff_overlap - teff2)).argmin()
         weight = gh_weights[t_index]
         flux = (flux1*weight + flux2*(1-weight))
 
@@ -149,7 +149,7 @@ def from_coefficients(logt, logg, feh):
         flux1 = cool_giants(cg, feh, logt, logg)
         flux2 = warm_giants(wg, feh, logt, logg)
 
-        t_index = (np.abs(gc_teff_overlap - teff)).argmin()
+        t_index = (np.abs(gc_teff_overlap - teff2)).argmin()
         weight = gc_weights[t_index]
         flux = (flux1*weight + flux2*(1-weight))
 
@@ -164,7 +164,7 @@ def from_coefficients(logt, logg, feh):
         flux1 = cool_dwarfs(cd, feh, logt, logg)
         flux2 = warm_dwarfs(wd, feh, logt, logg)
 
-        t_index = (np.abs(d_teff_overlap - teff)).argmin()
+        t_index = (np.abs(d_teff_overlap - teff2)).argmin()
         weight = d_weights[t_index]
         flux = (flux1*weight + flux2*(1-weight))
 
@@ -177,7 +177,7 @@ def from_coefficients(logt, logg, feh):
     else:
         error = ('Parameter out of bounds:'
                  'teff = {0},  logg {1}')
-        raise ValueError(error.format(teff, logg))
+        raise ValueError(error.format(teff2, logg))
 
     return flux
 
