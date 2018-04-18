@@ -25,7 +25,7 @@ def cool_giants(cg, feh, logt, logg):
 
     return cg[0,:] * 10**log_flux
 
-def warm_dwarfs(wd, feh, logt, logg):
+def warm_giants(wg, feh, logt, logg):
     log_flux = (wg[1,:] + wg[2,:]*logt + wg[3,:]*feh + wg[4,:]*logg + wg[5,:]*logt*logt +
                wg[6,:]*logg*logg + wg[7,:]*feh*feh + wg[8,:]*logt*feh + wg[9,:]*logt*logg +
                wg[10,:]*logg*feh + wg[11,:]*logt*logt*logt + wg[12,:]*logg*logg*logg +
