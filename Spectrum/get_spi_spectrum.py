@@ -6,7 +6,8 @@ class Spectrum(object):
 
     def __init__(self):
         """
-        Open SPI coefficient files
+        Instantiate the Spectrum class by reading in the
+        coefficients
         """
         path = '/Users/alexa/SPI_Utils/Spectrum/Coefficients/'
         cd = np.loadtxt(path + 'Cool_Dwarfs.dat')
@@ -27,142 +28,142 @@ class Spectrum(object):
         self.wg = wg[1:len(wg),:]
         self.hs = hs[1:len(hs),:]
 
-    def cool_dwarfs(cd, feh, logt, logg):
-        log_flux = (cd[1,:] +
-                    cd[2,:]*logt +
-                    cd[3,:]*feh +
-                    cd[4,:]*logg +
-                    cd[5,:]*feh*feh +
-                    cd[6,:]*logt*logt +
-                    cd[7,:]*logg*logg +
-                    cd[8,:]*logt*feh +
-                    cd[9,:]*logt*logg +
-                    cd[10,:]*feh*logg +
-                    cd[11,:]*feh*feh*feh +
-                    cd[12,:]*logt*logt*logt +
-                    cd[13,:]*logg*logg*logg +
-                    cd[14,:]*logt*logt*feh +
-                    cd[15,:]*logt*feh*feh +
-                    cd[16,:]*logg*logt*logt +
-                    cd[17,:]*logt*logt*logt*logt +
-                    cd[18,:]*feh*feh*feh*feh +
-                    cd[19,:]*logt*logt*feh*feh +
-                    cd[20,:]*logt*logt*logt*feh +
-                    cd[21,:]*logt*logt*logt*logt*logt
+    def cool_dwarfs(self, feh, logt, logg):
+        log_flux = (self.cd[1,:] +
+                    self.cd[2,:]*logt +
+                    self.cd[3,:]*feh +
+                    self.cd[4,:]*logg +
+                    self.cd[5,:]*feh*feh +
+                    self.cd[6,:]*logt*logt +
+                    self.cd[7,:]*logg*logg +
+                    self.cd[8,:]*logt*feh +
+                    self.cd[9,:]*logt*logg +
+                    self.cd[10,:]*feh*logg +
+                    self.cd[11,:]*feh*feh*feh +
+                    self.cd[12,:]*logt*logt*logt +
+                    self.cd[13,:]*logg*logg*logg +
+                    self.cd[14,:]*logt*logt*feh +
+                    self.cd[15,:]*logt*feh*feh +
+                    self.cd[16,:]*logg*logt*logt +
+                    self.cd[17,:]*logt*logt*logt*logt +
+                    self.cd[18,:]*feh*feh*feh*feh +
+                    self.cd[19,:]*logt*logt*feh*feh +
+                    self.cd[20,:]*logt*logt*logt*feh +
+                    self.cd[21,:]*logt*logt*logt*logt*logt
                     )
 
-        return cd[0,:] * np.exp(log_flux)
+        return self.cd[0,:] * np.exp(log_flux)
 
-    def cool_giants(cg, feh, logt, logg):
-        log_flux = (cg[1,:] +
-                    cg[2,:]*logt +
-                    cg[3,:]*feh +
-                    cg[4,:]*logg +
-                    cg[5,:]*logt*logt +
-                    cg[6,:]*logg*logg +
-                    cg[7,:]*feh*feh +
-                    cg[8,:]*feh*logg +
-                    cg[9,:]*logt*logg +
-                    cg[10,:]*logt*feh +
-                    cg[11,:]*logt*logt*logt +
-                    cg[12,:]*logg*logg*logg +
-                    cg[13,:]*feh*feh*feh +
-                    cg[14,:]*logt*logg*feh +
-                    cg[15,:]*logt*logt*feh +
-                    cg[16,:]*logt*logt*logg +
-                    cg[17,:]*feh*feh*logt +
-                    cg[18,:]*feh*feh*logg +
-                    cg[19,:]*logt*logg*logg +
-                    cg[20,:]*feh*logg*logg +
-                    cg[21,:]*logt*logt*logt*logt
+    def cool_giants(self, feh, logt, logg):
+        log_flux = (self.cg[1,:] +
+                    self.cg[2,:]*logt +
+                    self.cg[3,:]*feh +
+                    self.cg[4,:]*logg +
+                    self.cg[5,:]*logt*logt +
+                    self.cg[6,:]*logg*logg +
+                    self.cg[7,:]*feh*feh +
+                    self.cg[8,:]*feh*logg +
+                    self.cg[9,:]*logt*logg +
+                    self.cg[10,:]*logt*feh +
+                    self.cg[11,:]*logt*logt*logt +
+                    self.cg[12,:]*logg*logg*logg +
+                    self.cg[13,:]*feh*feh*feh +
+                    self.cg[14,:]*logt*logg*feh +
+                    self.cg[15,:]*logt*logt*feh +
+                    self.cg[16,:]*logt*logt*logg +
+                    self.cg[17,:]*feh*feh*logt +
+                    self.cg[18,:]*feh*feh*logg +
+                    self.cg[19,:]*logt*logg*logg +
+                    self.cg[20,:]*feh*logg*logg +
+                    self.cg[21,:]*logt*logt*logt*logt
                     )
 
-        return cg[0,:] * np.exp(log_flux)
+        return self.cg[0,:] * np.exp(log_flux)
 
-    def warm_giants(wg, feh, logt, logg):
-        log_flux = (wg[1,:] +
-                    wg[2,:]*logt +
-                    wg[3,:]*feh +
-                    wg[4,:]*logg +
-                    wg[5,:]*logt*logt +
-                    wg[6,:]*logg*logg +
-                    wg[7,:]*feh*feh +
-                    wg[8,:]*logt*feh +
-                    wg[9,:]*logt*logg +
-                    wg[10,:]*logg*feh +
-                    wg[11,:]*logt*logt*logt +
-                    wg[12,:]*logg*logg*logg +
-                    wg[13,:]*feh*feh*feh +
-                    wg[14,:]*logt*logt*feh +
-                    wg[15,:]*logt*feh*feh +
-                    wg[16,:]*logg*logt*logt +
-                    wg[17,:]*logg*logg*logt +
-                    wg[18,:]*logt*logt*logt*logt +
-                    wg[19,:]*feh*feh*feh*feh +
-                    wg[20,:]*logt*logt*feh*feh +
-                    wg[21,:]*logt*logt*logg*logg +
-                    wg[22,:]*feh*feh*logg*logg +
-                    wg[23,:]*logt*logt*logt*logt*logt
+    def warm_giants(self, feh, logt, logg):
+        log_flux = (self.wg[1,:] +
+                    self.wg[2,:]*logt +
+                    self.wg[3,:]*feh +
+                    self.wg[4,:]*logg +
+                    self.wg[5,:]*logt*logt +
+                    self.wg[6,:]*logg*logg +
+                    self.wg[7,:]*feh*feh +
+                    self.wg[8,:]*logt*feh +
+                    self.wg[9,:]*logt*logg +
+                    self.wg[10,:]*logg*feh +
+                    self.wg[11,:]*logt*logt*logt +
+                    self.wg[12,:]*logg*logg*logg +
+                    self.wg[13,:]*feh*feh*feh +
+                    self.wg[14,:]*logt*logt*feh +
+                    self.wg[15,:]*logt*feh*feh +
+                    self.wg[16,:]*logg*logt*logt +
+                    self.wg[17,:]*logg*logg*logt +
+                    self.wg[18,:]*logt*logt*logt*logt +
+                    self.wg[19,:]*feh*feh*feh*feh +
+                    self.wg[20,:]*logt*logt*feh*feh +
+                    self.wg[21,:]*logt*logt*logg*logg +
+                    self.wg[22,:]*feh*feh*logg*logg +
+                    self.wg[23,:]*logt*logt*logt*logt*logt
                     )
 
-        return wg[0,:] * np.exp(log_flux)
+        return self.wg[0,:] * np.exp(log_flux)
 
-    def warm_dwarfs(wd, feh, logt, logg):
-        log_flux = (wd[1,:] +
-                    wd[2,:]*logt +
-                    wd[3,:]*feh +
-                    wd[4,:]*logg +
-                    wd[5,:]*logt*logt +
-                    wd[6,:]*logg*logg +
-                    wd[7,:]*feh*feh +
-                    wd[8,:]*logt*feh +
-                    wd[9,:]*logt*logg +
-                    wd[10,:]*logt*logt*logt +
-                    wd[11,:]*logt*logg*logg +
-                    wd[12,:]*feh*feh*feh +
-                    wd[13,:]*logt*logt*logg +
-                    wd[14,:]*logt*logt*feh +
-                    wd[15,:]*logt*feh*feh +
-                    wd[16,:]*logt*logg*feh +
-                    wd[17,:]*logg*feh*feh +
-                    wd[18,:]*logt*logt*logt*logt +
-                    wd[19,:]*logg*logg*logg*logg +
-                    wd[20,:]*logt*logt*logt*logg +
-                    wd[21,:]*feh*logt*logt*logt +
-                    wd[22,:]*feh*feh*logt*logt +
-                    wd[23,:]*feh*feh*feh*logt +
-                    wd[24,:]*logt*logt*logg*logg +
-                    wd[25,:]*feh*logt*logt*logg +
-                    wd[26,:]*logt*logt*logt*logt*logt
+    def warm_dwarfs(self, feh, logt, logg):
+        log_flux = (self.wd[1,:] +
+                    self.wd[2,:]*logt +
+                    self.wd[3,:]*feh +
+                    self.wd[4,:]*logg +
+                    self.wd[5,:]*logt*logt +
+                    self.wd[6,:]*logg*logg +
+                    self.wd[7,:]*feh*feh +
+                    self.wd[8,:]*logt*feh +
+                    self.wd[9,:]*logt*logg +
+                    self.wd[10,:]*logt*logt*logt +
+                    self.wd[11,:]*logt*logg*logg +
+                    self.wd[12,:]*feh*feh*feh +
+                    self.wd[13,:]*logt*logt*logg +
+                    self.wd[14,:]*logt*logt*feh +
+                    self.wd[15,:]*logt*feh*feh +
+                    self.wd[16,:]*logt*logg*feh +
+                    self.wd[17,:]*logg*feh*feh +
+                    self.wd[18,:]*logt*logt*logt*logt +
+                    self.wd[19,:]*logg*logg*logg*logg +
+                    self.wd[20,:]*logt*logt*logt*logg +
+                    self.wd[21,:]*feh*logt*logt*logt +
+                    self.wd[22,:]*feh*feh*logt*logt +
+                    self.wd[23,:]*feh*feh*feh*logt +
+                    self.wd[24,:]*logt*logt*logg*logg +
+                    self.wd[25,:]*feh*logt*logt*logg +
+                    self.wd[26,:]*logt*logt*logt*logt*logt
                     )
 
-        return wd[0,:] * np.exp(log_flux)
+        return self.wd[0,:] * np.exp(log_flux)
 
-    def hot_stars(hs, feh, logt, logg):
-        log_flux = (hs[1,:] +
-                    hs[2,:]*logt +
-                    hs[3,:]*feh +
-                    hs[4,:]*logg +
-                    hs[5,:]*logt*logt +
-                    hs[6,:]*feh*feh +
-                    hs[7,:]*logg*logg +
-                    hs[8,:]*logt*logg +
-                    hs[9,:]*logt*feh +
-                    hs[10,:]*logg*feh +
-                    hs[11,:]*logt*logt*logt +
-                    hs[12,:]*logg*logg*logg +
-                    hs[13,:]*feh*feh*feh +
-                    hs[14,:]*logt*logg*feh +
-                    hs[15,:]*logt*logt*feh +
-                    hs[16,:]*logt*logt*logg +
-                    hs[17,:]*feh*feh*logt +
-                    hs[18,:]*feh*feh*logg +
-                    hs[19,:]*logt*logg*logg +
-                    hs[20,:]*feh*logg*logg +
-                    hs[21,:]*logt*logt*logt*logt
+    def hot_stars(self, feh, logt, logg):
+        log_flux = (self.hs[1,:] +
+                    self.hs[2,:]*logt +
+                    self.hs[3,:]*feh +
+                    self.hs[4,:]*logg +
+                    self.hs[5,:]*logt*logt +
+                    self.hs[6,:]*feh*feh +
+                    self.hs[7,:]*logg*logg +
+                    self.hs[8,:]*logt*logg +
+                    self.hs[9,:]*logt*feh +
+                    self.hs[10,:]*logg*feh +
+                    self.hs[11,:]*logt*logt*logt +
+                    self.hs[12,:]*logg*logg*logg +
+                    self.hs[13,:]*feh*feh*feh +
+                    self.hs[14,:]*logt*logg*feh +
+                    self.hs[15,:]*logt*logt*feh +
+                    self.hs[16,:]*logt*logt*logg +
+                    self.hs[17,:]*feh*feh*logt +
+                    self.hs[18,:]*feh*feh*logg +
+                    self.hs[19,:]*logt*logg*logg +
+                    self.hs[20,:]*feh*logg*logg +
+                    self.hs[21,:]*logt*logt*logt*logt
                     )
 
-        return hs[0,:] * np.exp(log_flux)
+        return self.hs[0,:] * np.exp(log_flux)
 
     def from_coefficients(self, teff, logg, feh):
         """ Generate a stellar spectrum using the
@@ -215,22 +216,22 @@ class Spectrum(object):
 
         # Giants
         if (teff2 >= 2500. and teff2 <= 3500. and logg2 <= 4.0 and logg2 >= -0.5):
-            flux = self.cool_giants(cg, feh, logt, logg)
+            flux = self.cool_giants(feh, logt, logg)
 
         elif (teff2 >= 4500. and teff2 <= 5500. and logg2 <= 4.0 and logg2 >= -0.5):
-            flux = self.warm_giants(wg, feh, logt, logg)
+            flux = self.warm_giants(feh, logt, logg)
 
         elif (teff2 >= 5500. and teff2 < 6500. and logg2 <= 4.0 and logg2 >= -0.5):
-            flux1 = self.warm_giants(wg, feh, logt, logg)
-            flux2 = self.hot_stars(hs, feh, logt, logg)
+            flux1 = self.warm_giants(feh, logt, logg)
+            flux2 = self.hot_stars(feh, logt, logg)
 
             t_index = (np.abs(gh_teff_overlap - teff2)).argmin()
             weight = gh_weights[t_index]
             flux = (flux1*weight + flux2*(1-weight))
 
         elif (teff2 >= 3500. and teff2 < 4500. and logg2 <= 4.0 and logg2 >= -0.5):
-            flux1 = self.cool_giants(cg, feh, logt, logg)
-            flux2 = self.warm_giants(wg, feh, logt, logg)
+            flux1 = self.cool_giants(feh, logt, logg)
+            flux2 = self.warm_giants(feh, logt, logg)
 
             t_index = (np.abs(gc_teff_overlap - teff2)).argmin()
             weight = gc_weights[t_index]
@@ -238,14 +239,14 @@ class Spectrum(object):
 
         # Dwarfs
         elif (teff2 >= 5500. and teff2 < 6000. and logg2 > 4.0):
-            flux = self.warm_dwarfs(wd, feh, logt, logg)
+            flux = self.warm_dwarfs(feh, logt, logg)
 
         elif (teff2 >= 2500. and teff2 <= 3000. and logg2 > 4.0):
-            flux = self.cool_dwarfs(cd, feh, logt, logg)
+            flux = self.cool_dwarfs(feh, logt, logg)
 
         elif (teff2 >= 3000. and teff2 <= 5500. and logg2 > 4.0):
-            flux1 = self.cool_dwarfs(cd, feh, logt, logg)
-            flux2 = self.warm_dwarfs(wd, feh, logt, logg)
+            flux1 = self.cool_dwarfs(feh, logt, logg)
+            flux2 = self.warm_dwarfs(feh, logt, logg)
 
             t_index = (np.abs(d_teff_overlap - teff2)).argmin()
             weight = d_weights[t_index]
@@ -253,29 +254,35 @@ class Spectrum(object):
 
         # Hot stars, have to split this up bcuz of warm stars
         elif (teff2 >= 6500. and teff2 <= 12e3 and logg2 <= 4.0 and logg2 >= -0.5):
-            flux = self.hot_stars(hs, feh, logt, logg)
+            flux = self.hot_stars(feh, logt, logg)
 
         elif (teff2 >= 6000. and teff2 <= 12e3 and logg2 > 4.0):
-            flux = self.hot_stars(hs, feh, logt, logg)
+            flux = self.hot_stars(feh, logt, logg)
         else:
             error = ('Parameter out of bounds:'
                      'teff = {0},  logg {1}')
             raise ValueError(error.format(teff2, logg))
 
         spec = {}
-        spec['wave'] = wave
-        spec['flux'] = flux
+        i = (self.wave >= 0.36)
+        spec['wave'] = self.wave[i]
+        spec['flux'] = flux[i]
 
         return spec
 
 if __name__=='__main__':
+    """ Example how to use
+    """
 
     import matplotlib.pyplot as plt
+
     teff = 3110.1831261806437
     logg = 5.1249530724684771
     feh = 0.0
 
-    spec = from_coefficients(teff, logg, feh)
+    spec = Spectrum()
+
+    spec = spec.from_coefficients(teff, logg, feh)
     plt.plot(spec['wave'], spec['flux'])
     plt.show()
 
