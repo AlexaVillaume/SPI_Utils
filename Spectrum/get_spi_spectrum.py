@@ -164,109 +164,109 @@ class Spectrum(object):
 
         return hs[0,:] * np.exp(log_flux)
 
-def from_coefficients(teff, logg, feh):
-    """ Generate a stellar spectrum using the
-    coeffecients
+    def from_coefficients(self, teff, logg, feh):
+        """ Generate a stellar spectrum using the
+        coeffecients
 
-    Parameters:
-    -----------
-    teff: float
-        effective temperture
-    logg: float
-        surface gravity
-    feh: float
-        metallicity
+        Parameters:
+        -----------
+        teff: float
+            effective temperture
+        logg: float
+            surface gravity
+        feh: float
+            metallicity
 
-    Output:
-    -------
-    flux: ndarray
-        interpolated spectrum
-    """
+        Output:
+        -------
+        flux: ndarray
+            interpolated spectrum
+        """
 
-    """
-    These weights are used later to ensure
-    smooth behavior.
-    """
-    # Overlap of cool dwarf and warm dwarf training sets
-    d_teff_overlap = np.linspace(3000, 5500, num=100)
-    d_weights = np.linspace(1, 0, num=100)
+        """
+        These weights are used later to ensure
+        smooth behavior.
+        """
+        # Overlap of cool dwarf and warm dwarf training sets
+        d_teff_overlap = np.linspace(3000, 5500, num=100)
+        d_weights = np.linspace(1, 0, num=100)
 
-    # Overlap of warm giant and hot star training sets
-    gh_teff_overlap = np.linspace(5500, 6500, num=100)
-    gh_weights = np.linspace(1, 0, num=100)
+        # Overlap of warm giant and hot star training sets
+        gh_teff_overlap = np.linspace(5500, 6500, num=100)
+        gh_weights = np.linspace(1, 0, num=100)
 
-    # Overlap of warm giant and cool giant training sets
-    gc_teff_overlap = np.linspace(3500, 4500, num=100)
-    gc_weights = np.linspace(1, 0, num=100)
+        # Overlap of warm giant and cool giant training sets
+        gc_teff_overlap = np.linspace(3500, 4500, num=100)
+        gc_weights = np.linspace(1, 0, num=100)
 
-    """
-    Setting up some boundaries
-    """
-    teff2 = teff
-    logg2 = logg
-    if teff2 <= 2800.:
-        teff2 = 2800
-    if logg2 < (-0.5):
-        logg2 = (-0.5)
+        """
+        Setting up some boundaries
+        """
+        teff2 = teff
+        logg2 = logg
+        if teff2 <= 2800.:
+            teff2 = 2800
+        if logg2 < (-0.5):
+            logg2 = (-0.5)
 
-    # Normalizing to solar values
-    logt = np.log10(teff2) - 3.7617
-    logg = logg - 4.44
+        # Normalizing to solar values
+        logt = np.log10(teff2) - 3.7617
+        logg = logg - 4.44
 
-    # Giants
-    if (teff2 >= 2500. and teff2 <= 3500. and logg2 <= 4.0 and logg2 >= -0.5):
-        flux = cool_giants(cg, feh, logt, logg)
+        # Giants
+        if (teff2 >= 2500. and teff2 <= 3500. and logg2 <= 4.0 and logg2 >= -0.5):
+            flux = self.cool_giants(cg, feh, logt, logg)
 
-    elif (teff2 >= 4500. and teff2 <= 5500. and logg2 <= 4.0 and logg2 >= -0.5):
-        flux = warm_giants(wg, feh, logt, logg)
+        elif (teff2 >= 4500. and teff2 <= 5500. and logg2 <= 4.0 and logg2 >= -0.5):
+            flux = self.warm_giants(wg, feh, logt, logg)
 
-    elif (teff2 >= 5500. and teff2 < 6500. and logg2 <= 4.0 and logg2 >= -0.5):
-        flux1 = warm_giants(wg, feh, logt, logg)
-        flux2 = hot_stars(hs, feh, logt, logg)
+        elif (teff2 >= 5500. and teff2 < 6500. and logg2 <= 4.0 and logg2 >= -0.5):
+            flux1 = self.warm_giants(wg, feh, logt, logg)
+            flux2 = self.hot_stars(hs, feh, logt, logg)
 
-        t_index = (np.abs(gh_teff_overlap - teff2)).argmin()
-        weight = gh_weights[t_index]
-        flux = (flux1*weight + flux2*(1-weight))
+            t_index = (np.abs(gh_teff_overlap - teff2)).argmin()
+            weight = gh_weights[t_index]
+            flux = (flux1*weight + flux2*(1-weight))
 
-    elif (teff2 >= 3500. and teff2 < 4500. and logg2 <= 4.0 and logg2 >= -0.5):
-        flux1 = cool_giants(cg, feh, logt, logg)
-        flux2 = warm_giants(wg, feh, logt, logg)
+        elif (teff2 >= 3500. and teff2 < 4500. and logg2 <= 4.0 and logg2 >= -0.5):
+            flux1 = self.cool_giants(cg, feh, logt, logg)
+            flux2 = self.warm_giants(wg, feh, logt, logg)
 
-        t_index = (np.abs(gc_teff_overlap - teff2)).argmin()
-        weight = gc_weights[t_index]
-        flux = (flux1*weight + flux2*(1-weight))
+            t_index = (np.abs(gc_teff_overlap - teff2)).argmin()
+            weight = gc_weights[t_index]
+            flux = (flux1*weight + flux2*(1-weight))
 
-    # Dwarfs
-    elif (teff2 >= 5500. and teff2 < 6000. and logg2 > 4.0):
-        flux = warm_dwarfs(wd, feh, logt, logg)
+        # Dwarfs
+        elif (teff2 >= 5500. and teff2 < 6000. and logg2 > 4.0):
+            flux = self.warm_dwarfs(wd, feh, logt, logg)
 
-    elif (teff2 >= 2500. and teff2 <= 3000. and logg2 > 4.0):
-        flux = cool_dwarfs(cd, feh, logt, logg)
+        elif (teff2 >= 2500. and teff2 <= 3000. and logg2 > 4.0):
+            flux = self.cool_dwarfs(cd, feh, logt, logg)
 
-    elif (teff2 >= 3000. and teff2 <= 5500. and logg2 > 4.0):
-        flux1 = cool_dwarfs(cd, feh, logt, logg)
-        flux2 = warm_dwarfs(wd, feh, logt, logg)
+        elif (teff2 >= 3000. and teff2 <= 5500. and logg2 > 4.0):
+            flux1 = self.cool_dwarfs(cd, feh, logt, logg)
+            flux2 = self.warm_dwarfs(wd, feh, logt, logg)
 
-        t_index = (np.abs(d_teff_overlap - teff2)).argmin()
-        weight = d_weights[t_index]
-        flux = (flux1*weight + flux2*(1-weight))
+            t_index = (np.abs(d_teff_overlap - teff2)).argmin()
+            weight = d_weights[t_index]
+            flux = (flux1*weight + flux2*(1-weight))
 
-    # Hot stars, have to split this up bcuz of warm stars
-    elif (teff2 >= 6500. and teff2 <= 12e3 and logg2 <= 4.0 and logg2 >= -0.5):
-        flux = hot_stars(hs, feh, logt, logg)
+        # Hot stars, have to split this up bcuz of warm stars
+        elif (teff2 >= 6500. and teff2 <= 12e3 and logg2 <= 4.0 and logg2 >= -0.5):
+            flux = self.hot_stars(hs, feh, logt, logg)
 
-    elif (teff2 >= 6000. and teff2 <= 12e3 and logg2 > 4.0):
-        flux = hot_stars(hs, feh, logt, logg)
-    else:
-        error = ('Parameter out of bounds:'
-                 'teff = {0},  logg {1}')
-        raise ValueError(error.format(teff2, logg))
+        elif (teff2 >= 6000. and teff2 <= 12e3 and logg2 > 4.0):
+            flux = self.hot_stars(hs, feh, logt, logg)
+        else:
+            error = ('Parameter out of bounds:'
+                     'teff = {0},  logg {1}')
+            raise ValueError(error.format(teff2, logg))
 
-    spec = {}
-    spec['wave'] = wave
-    spec['flux'] = flux
+        spec = {}
+        spec['wave'] = wave
+        spec['flux'] = flux
 
-    return spec
+        return spec
 
 if __name__=='__main__':
 
