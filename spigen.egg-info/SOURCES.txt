@@ -1,0 +1,7 @@
+setup.py
+spigen/__init__.py
+spigen/get_spi_spectrum.py
+spigen.egg-info/PKG-INFO
+spigen.egg-info/SOURCES.txt
+spigen.egg-info/dependency_links.txt
+spigen.egg-info/top_level.txt
